@@ -65,10 +65,10 @@ def find_clue(clues, new_clue):
         print("You already know this clue.")
     return clues
 
-def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, artifacts):
+def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, _artifacts):  # Renamed 'artifacts' to '_artifacts'
     """Handles dungeon exploration, including the Cryptic Library."""
     for room in dungeon_rooms:
-        room_description, item, challenge_type, challenge_outcome = room  # Unpacking tuple
+        room_description, item, challenge_type, _ = room  # Ignoring 'challenge_outcome' if unused
 
         print(f"Entering: {room_description}")
 
