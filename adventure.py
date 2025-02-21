@@ -68,22 +68,29 @@ def find_clue(clues, new_clue):
 def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, artifacts):
     """Handles dungeon exploration, including the Cryptic Library."""
     for room in dungeon_rooms:
-        print(f"Entering: {room['room_description']}")
-        if room['item'] and room['item'] not in inventory:
-            inventory.append(room['item'])
-            print(f"You found a {room['item']}!")
+        room_description, item, challenge_type, challenge_outcome = room  # Unpacking tuple
 
-        if room['challenge_type'] == "library":
+        print(f"Entering: {room_description}")
+
+        if item and item not in inventory:
+            inventory.append(item)
+            print(f"You found a {item}!")
+
+        if challenge_type == "library":
             print("This is the Cryptic Library, full of mysterious books.")
-            clues_list = ["The treasure is hidden where the dragon sleeps.",
-                          "The key lies with the gnome.", "Beware the shadows.",
-                          "The amulet unlocks the final door."]
+            clues_list = [
+                "The treasure is hidden where the dragon sleeps.",
+                "The key lies with the gnome.",
+                "Beware the shadows.",
+                "The amulet unlocks the final door."
+            ]
             selected_clues = random.sample(clues_list, 2)
             for clue in selected_clues:
                 clues = find_clue(clues, clue)
+
             if "staff_of_wisdom" in inventory:
                 print("The staff of wisdom helps you understand the clues. You may bypass a puzzle!")
-        
+
     return player_stats, inventory, clues
 
 def main():
