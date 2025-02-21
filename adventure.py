@@ -65,7 +65,7 @@ def find_clue(clues, new_clue):
         print("You already know this clue.")
     return clues
 
-def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
+def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, artifacts):
     """Handles dungeon exploration, including the Cryptic Library."""
     for room in dungeon_rooms:
         print(f"Entering: {room['room_description']}")
