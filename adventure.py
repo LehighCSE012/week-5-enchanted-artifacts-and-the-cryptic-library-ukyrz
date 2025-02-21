@@ -29,30 +29,52 @@ def find_clue(clues, new_clue):
         print(f"You discovered a new clue: {new_clue}")
     return clues
 
-def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
-    """Handles the dungeon exploration and encounters."""
+def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, artifacts):
+    """Handles exloration"""
+    if not isinstance(dungeon_rooms, list) or not all(isinstance(room, tuple) and len(room) == 4 for room in dungeon_rooms):
+        raise TypeError("dungeon_rooms must be a list of 4-element tuples")
+    
     for room in dungeon_rooms:
-        print(f"You enter: {room['description']}")
+        room_name, item, challenge_type, challenge_outcome = room
+        print(f"You have entered {room_name}.")
         
-        if room['item'] and room['item'] not in inventory:
-            inventory.append(room['item'])
-            print(f"You found a {room['item']}!")
+        if item:
+            print(f"You found a {item}!")
+            inventory.append(item)
         
-        if room['challenge_type'] == "library":
-            print("You explore the Cryptic Library...")
-            possible_clues = [
-                "The treasure is hidden where the dragon sleeps.",
-                "The key lies with the gnome.",
-                "Beware the shadows.",
-                "The amulet unlocks the final door."
-            ]
-            selected_clues = random.sample(possible_clues, 2)
-            for clue in selected_clues:
-                clues = find_clue(clues, clue)
-            
-            if "staff_of_wisdom" in inventory:
-                print("Your Staff of Wisdom reveals deeper meanings behind the clues!")
-    return player_stats, inventory, clues
+        if challenge_type == "puzzle":
+            if not isinstance(challenge_outcome, tuple) or len(challenge_outcome) != 3:
+                raise TypeError("Puzzle challenges must have a 3-element outcome tuple")
+            success, fail, penalty = challenge_outcome
+            print("You encountered a puzzle!")
+            if "key" in inventory:  # Example condition
+                print(success)
+            else:
+                print(fail)
+                player_stats["health"] -= penalty
+        
+        elif challenge_type == "trap":
+            if not isinstance(challenge_outcome, tuple) or len(challenge_outcome) != 3:
+                raise TypeError("Trap challenges must have a 3-element outcome tuple")
+            success, fail, penalty = challenge_outcome
+            print("You triggered a trap!")
+            if player_stats["health"] > penalty:
+                print(success)
+                player_stats["health"] -= penalty
+            else:
+                print(fail)
+                player_stats["health"] = 0
+        
+        elif challenge_type == "library":
+            print("You found an ancient library with cryptic texts.")
+            clues.add("ancient text fragment")
+        
+        elif challenge_type == "none":
+            print("This room is empty.")
+        else:
+            print(f"Unknown challenge type: {challenge_type}. Skipping room.")
+    
+    print("Dungeon exploration complete.")
 
 def main():
     """Main game loop."""
