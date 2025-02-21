@@ -45,7 +45,7 @@ def combat_encounter(player_stats, monster_health, has_treasure):
 def discover_artifact(player_stats, artifacts, artifact_name):
     """Handles discovering artifacts and updating player stats."""
     if artifact_name in artifacts:
-        artifact = artifacts.pop(artifact_name)  # Remove from dictionary so it can't be found again
+        artifact = artifacts.pop(artifact_name)  
         print(f"You found {artifact_name}: {artifact['description']}")
         if artifact['effect'] == "increases health":
             player_stats['health'] += artifact['power']
@@ -65,10 +65,10 @@ def find_clue(clues, new_clue):
         print("You already know this clue.")
     return clues
 
-def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, _artifacts):  # Renamed 'artifacts' to '_artifacts'
+def enter_dungeon(player_stats, inventory, dungeon_rooms, clues, _artifacts):  
     """Handles dungeon exploration, including the Cryptic Library."""
     for room in dungeon_rooms:
-        room_description, item, challenge_type, _ = room  # Ignoring 'challenge_outcome' if unused
+        room_description, item, challenge_type, _ = room  
 
         print(f"Entering: {room_description}")
 
